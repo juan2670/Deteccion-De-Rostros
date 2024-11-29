@@ -1,44 +1,33 @@
 import cv2
-import os
 import numpy as np
+import os
 
-#Le decimos la ruta donde se encuentran las carpetas de los modelos ya capturados
-dataPath = 'C:/Users/user/OneDrive/Escritorio/RECONOCIMIENTO/Rostros'  # SE CAMBIA LA RUTA
+# Ruta de las imágenes de entrenamiento
+dataPath = 'C:/Users/user/OneDrive/Escritorio/RECONOCIMIENTO/Rostros'
+imagePaths = os.listdir(dataPath)
 
-#retorna una lista con los nombres de las carpetas creadas
-peoplelist = os.listdir(dataPath)
-#print("Lista personas", peoplelist)
+# Crear el reconocedor
+face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 
-#Crear un array para poder indentificar mediante posiciones las diferntes personas
+# Listas para almacenar las imágenes y etiquetas
+facesData = []
 labels = []
-facesDate = []
-label = 0
 
-#1 especificamos la ruta del directorio donde se van a leer las imagenes
-for nameDir in peoplelist:
-    personPath = dataPath + "/" + nameDir
-    print("Leyendo Imagenes")
-
-#2 leemos las imagenes de la carpeta
+# Recorrer las imágenes para leerlas y etiquetarlas
+for label, nameDir in enumerate(imagePaths):
+    personPath = os.path.join(dataPath, nameDir)
     for fileName in os.listdir(personPath):
-        print("Rostros: ",  nameDir + "/" + fileName)
-        #Asignar las posiciones de cada imagen
-        labels.append(label)
-        #las pasamos a escala de grises
-        facesDate.append(cv2.imread(personPath+ "/" + fileName, 0))
-        image = cv2.imread(personPath + "/" + fileName, 0)
-        #motrar las imagenes capturadas
-        cv2.imshow("image", image)
-        cv2.waitKey(10)
-    #aumentamos el contador de las etiquetas
-    label += 1
-#print("labels = ", labels)
+        if fileName.endswith(".jpg") or fileName.endswith(".png"):
+            imgPath = os.path.join(personPath, fileName)
+            gray = cv2.imread(imgPath, 0)
+            facesData.append(gray)
+            labels.append(label)
 
-#utilizamos el Metodo
-faces = cv2.face.EigenFaceRecognizer_create()
-print("Enetreando modelo...")
-#Entrenamiento del modelo
-faces.train(facesDate, np.array(labels ))
-#Almacenando modelo
-faces.write("modeloEntrenado.xml")
-print("Modelo almacenado....")
+# Entrenar el modelo
+face_recognizer.train(facesData, np.array(labels))
+
+# Guardar el modelo entrenado
+face_recognizer.write('modeloLBPHFace.xml')
+
+print("Modelo entrenado y guardado.")
+
