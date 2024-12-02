@@ -4,6 +4,8 @@ import os
 
 # Ruta de las imágenes de entrenamiento
 dataPath = 'C:/Users/user/OneDrive/Escritorio/RECONOCIMIENTO/Rostros'
+
+# Guardamos en una lista los nombres de cada una de las carpetas
 imagePaths = os.listdir(dataPath)
 
 # Crear el reconocedor
@@ -26,8 +28,11 @@ for label, nameDir in enumerate(imagePaths):
 # Entrenar el modelo
 face_recognizer.train(facesData, np.array(labels))
 
-# Guardar el modelo entrenado
-face_recognizer.write('modeloLBPHFace.xml')
+# Especifica la ruta completa donde se guardará el modelo dentro de la carpeta 'Rostros'
+modelPath = os.path.join(dataPath, 'modeloLBPHFace.xml')
 
-print("Modelo entrenado y guardado.")
+# Guardar el modelo entrenado en la carpeta 'Rostros'
+face_recognizer.write(modelPath)
+
+print("Modelo entrenado y guardado en:", modelPath)
 

@@ -1,2 +1,0 @@
-https://www.freecodecamp.org/espanol/news/python-guia-para-mostrar-archivos-en-un-directorio-listdir-vs-system-ls-explicados-con-ejemplos/
-https://www.youtube.com/watch?v=cZkpaL36fW4&list=PLBg7GSvtrU2N5zbvH7ThBn04ZWJQ0LKli&index=5
